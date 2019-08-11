@@ -1,54 +1,74 @@
-import os 
-import csv 
+import os
+import csv
 
+csvpath = 'Resources/election_data.csv'
 
-csvpath = 'Resources/budget_data.csv'
 with open(csvpath, newline='') as csvfile:
-    reader = csv.reader(csvfile, delimiter=',')
+    csvreader = csv.reader(csvfile, delimiter=',')
     csv_header = next(csvfile)
-    print(f"Header: {csv_header}")
-    
-    total_month = 0
-    profit = 0
-    lenght_of_profit = []
-    date = []
 
-    for row in reader:
-        total_month+=1
-        profit+=int(row[1])
-        lenght_of_profit.append(int(row[1]))
-        date.append(row[0])
+    total_votes = 0
+    count_khan = 0
+    count_correy = 0
+    count_li = 0
+    count_otooley = 0
+    candidates = []
 
-    print(total_month)
-    print(f'${profit}')
-    
-
-    profit_change = []
-    greatest_max_date = ''
-    greatest_min_date = ''
-
-
-
-    for x in range(1, len(lenght_of_profit)):
-        profit_change.append((int(lenght_of_profit[x]) - int(lenght_of_profit[x-1])))
-        average_change = sum(profit_change) / len(profit_change)
-    print(f'${average_change: .2f}')
-
-    greatest_profit_increase = max(profit_change)
-    greatest_profit_decrease = min(profit_change)
-    #print("hello here")
-
-    print(greatest_profit_increase)
-    print(greatest_profit_decrease)
-    #print(lenght_of_profit)
-
-    for i in range(len(profit_change)):
+    for row in csvreader:
+        total_votes+=1
         
-        if (profit_change[i] == greatest_profit_increase):
-            print(f'Greatest Increase in Profits: {date[i + 1]} (${greatest_profit_increase})')
-        if (profit_change[i] == greatest_profit_decrease):
-            print(f'Greatest Decrease in Profits: {date[i + 1]} (${greatest_profit_decrease})')
+        if row[2] not in candidates: 
+            candidates.append(row[2]) 
+        #print(candidates)
+
+        if row[2] == "Khan":
+            count_khan+=1
+        if row[2] == "Correy" :
+            count_correy+=1
+        if row[2] == "Li":
+            count_li+=1
+        if row[2] == "O'Tooley":
+            count_otooley+=1
+
+        percentage_khan = (count_khan/total_votes) *100
+        percentage_correy = (count_correy/total_votes) *100
+        percentage_li = (count_li/total_votes) *100
+        percentage_otooley = (count_otooley/total_votes) *100
+    
+    print(f'Khan: {percentage_khan: .3f}% ({count_khan})')
+    print(f'Correy: {percentage_correy: .3f}% ({count_correy})')
+    print(f'Li: {percentage_li: .3f}% ({count_li})')
+    print(f"O'Tooley: {percentage_otooley: .3f}% ({count_otooley})")
         
 
-# cd into the python file directory
-# the csv and python should be close to each other
+    if count_khan > count_correy and count_li and count_otooley:
+        print(f'Winner: Khan')
+    elif count_correy > count_khan and count_li and count_otooley:
+        print(f'Winner: Correy')
+    elif count_li > count_khan and count_correy and count_otooley:
+        print(f'Winner: Li')
+    else:
+        print(f"Winner; O'Tooley")
+
+                    
+            
+
+
+
+
+
+
+
+    
+    
+
+
+
+    
+
+    
+
+
+
+
+
